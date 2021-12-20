@@ -12,3 +12,5 @@ impsqe.m, stepseq.m, sigshift.m, sigfold.m, sigadd.m, sigmult.m,
 properties of complex number, complex addition, multiplication, division (using conj), principle square root, standard & polar (euler) representation 
 ### 4. Excercises for basic signals and operations
 s1.m
+### 5. Convolution
+unit_sample_synth, conv_m.m
