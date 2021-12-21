@@ -13,5 +13,5 @@ properties of complex number, complex addition, multiplication, division (using 
 ### 4. Excercises for basic signals and operations
 s1.m
 ### 5. Convolution
-odd and even decomposition, convolution, cross-correlation 
+odd and even decomposition, convolution, cross-correlation, four properties of convolution
 unit_sample_synth, conv_m.m, s2.m
