@@ -1,5 +1,0 @@
-function [rxy,nxy] = xcorr_m(x,nx,h,nh)
-
-    
-
-end

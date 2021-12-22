@@ -13,5 +13,5 @@ properties of complex number, complex addition, multiplication, division (using 
 ### 4. Excercises for basic signals and operations
 s1.m
 ### 5. Convolution
-odd and even decomposition, convolution, cross-correlation, four properties of convolution
+odd and even decomposition, convolution, cross-correlation, four properties of convolution, matlab DTFT implementation, DTFT can be implemented as matrix multiplication, thus many interesting concepts from linear algebra can be imported into DSP, like eignevalue and eigenvector.
 unit_sample_synth, conv_m.m, s2.m
