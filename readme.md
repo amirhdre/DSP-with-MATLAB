@@ -15,3 +15,7 @@ s1.m
 ### 5. Convolution
 odd and even decomposition, convolution, cross-correlation, four properties of convolution, matlab DTFT implementation, DTFT can be implemented as matrix multiplication, thus many interesting concepts from linear algebra can be imported into DSP, like eignevalue and eigenvector.
 unit_sample_synth, conv_m.m, s2.m
+### 6. DFT or DTFT (variable is time n)
+properties of DTFT, linearity, modulation (freq-shift), time-shift, conjugation. Write DFT from scratch. compare our own DFT and matlab's FFT. 
+
+
