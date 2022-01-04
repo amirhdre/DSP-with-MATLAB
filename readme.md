@@ -31,7 +31,7 @@ s1.m
 odd and even decomposition, convolution, cross-correlation, four properties of convolution, matlab DTFT implementation, DTFT can be implemented as matrix multiplication, thus many interesting concepts from linear algebra can be imported into DSP, like eignevalue and eigenvector.
 unit_sample_synth, conv_m.m, s2.m
 
-### 6. DFT or DTFT (variable is time n)
+### 6. DFT or DTFT 
 - [Digital Signal Processing Using Matlab 6 (Discrete Fourier Transform 1)](https://www.youtube.com/watch?v=cbC1y-Y0V10&list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW&index=10)
 - [Digital Signal Processing Using Matlab 7 (Discrete Fourier Transform 2)](https://www.youtube.com/watch?v=sClKKXlwDMM&list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW&index=10)
 - [Digital Signal Processing Using Matlab 8 (Discrete Fourier Transform 3)](https://www.youtube.com/watch?v=69oyTIdIIfk&list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW&index=11)
@@ -39,4 +39,9 @@ unit_sample_synth, conv_m.m, s2.m
 properties of DTFT, linearity, modulation (freq-shift), time-shift, conjugation. Write DFT from scratch. compare our own DFT and matlab's FFT. 
 folding, convolution, correlation, multiplication,  Parseval's Theorem (energy), s3.m
 
+### 7. DFS 
+- [Digital Signal Processing Using Matlab 9 (Discrete Fourier Series 1)](https://www.youtube.com/watch?v=8CALyVlfB0U&list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW&index=12)
+- [Digital Signal Processing Using Matlab 10 (Discrete Fourier Series 2)](https://www.youtube.com/watch?v=lbgPUeDyxkQ&list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW&index=14)
+- [Digital Signal Processing Using Matlab 11 (Discrete Fourier Series 3)](https://www.youtube.com/watch?v=keY4SDmFh8E&list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW&index=15)
 
+DFS matlab implementation, periodic singal example, dfs.m, idfs.m, s4.m, 
