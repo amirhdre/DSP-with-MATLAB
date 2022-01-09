@@ -44,4 +44,4 @@ folding, convolution, correlation, multiplication,  Parseval's Theorem (energy),
 - [Digital Signal Processing Using Matlab 10 (Discrete Fourier Series 2)](https://www.youtube.com/watch?v=lbgPUeDyxkQ&list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW&index=14)
 - [Digital Signal Processing Using Matlab 11 (Discrete Fourier Series 3)](https://www.youtube.com/watch?v=keY4SDmFh8E&list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW&index=15)
 
-DFS matlab implementation, periodic singal example, dfs.m, idfs.m, s4.m, 
+DFS matlab implementation, periodic singal example, dfs.m, idfs.m, s4.m, DFS of square wave train, relationship between frequency domain and time domain, effect of each fourier series coefficients on the singal in time domain (after synthesis)
