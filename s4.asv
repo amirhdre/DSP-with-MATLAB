@@ -29,7 +29,7 @@ X = dfs(x,N);
 %% square wave train (periodic in time)
 % periodic square train
 
-N = 99; % 11 17 41 73
+N = 9; % 11 17 41 73
 N1 = 2;
 
 x0 = zeros([1 N]);
@@ -56,19 +56,7 @@ stem(O,real(a)*N); hold on;
 stem(O,b*N)
 
 %       you can increase N and see the effect. When we have N=9, we have 9
-% sample in frequency domain. When we have N=11, we get 11 sample in
-% frequency domain, and etc. 
-
-%       Rule of thumb: Increasing N in time gives you denser sample in fequency.
-% this is apparent because Omega is getting denser. At the same time, k
-% change and is from -(N-1)/2 to (N-1)/2 (length=N). 
-
-%       Base on above: What happen if you increase N to infinity? 
-% answer: the time axis becomes so dense that we get a continuous function.
-% Here we can see how time and frequency axis can be related! Increasing
-% the period in the time domain == increasing the number of samples (denser
-% frequency axis) in frequency domain. As long as the shape of one period
-% not change in time, the frequncy shape will not change. 
+%       sample in frequency domain. 
 
 %% synthensis formula 
 
