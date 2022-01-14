@@ -1,7 +1,7 @@
 function [y,n] = sigmult(x1, n1, x2, n2)
     
     % implements y(n)=x1(n)*x2(n)
-    % [y,n] = sigadd(x1,n1,x2,n2)
+    % [y,n] = sigmult(x1,n1,x2,n2)
     % y: multiplied sequence over n, which includes n1 and n2
     % x1: first sequence over n1
     % x2: second sequence over n2

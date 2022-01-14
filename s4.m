@@ -53,7 +53,7 @@ b(isnan(b)) = (2*N1+1)/N;
 
 figure
 stem(O,real(a)*N); hold on;
-stem(O,b*N)
+stem(O,N*b)
 
 %       you can increase N and see the effect. When we have N=9, we have 9
 % sample in frequency domain. When we have N=11, we get 11 sample in
@@ -133,4 +133,14 @@ stem(nx,real(x4),'r'); hold off;
 % return all of the frequency components from frequency domain to the time
 % domain.
 
-%%
+%% Aperiodic Square Wave
+
+N1 = 2;
+
+Omega = -4*pi:0.01:4*pi;
+X = sin((2*N1+1)*Omega/2)./sin(Omega/2);
+
+figure
+plot(Omega,X,'k'); axis tight;
+
+

@@ -167,8 +167,7 @@ X1 = x1*(exp(-1i*pi/M)).^(n'*k);
 
 [XX1,F1] = sigshift(X,w,pi/2);
 
-figure;
-plot(k/M, abs(X),'b'); hold on;
+ hold on;
 plot(k/M, abs(X1),'g')
 plot(F1/pi, abs(XX1),'r')
 
