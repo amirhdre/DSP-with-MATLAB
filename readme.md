@@ -45,3 +45,18 @@ folding, convolution, correlation, multiplication,  Parseval's Theorem (energy),
 - [Digital Signal Processing Using Matlab 11 (Discrete Fourier Series 3)](https://www.youtube.com/watch?v=keY4SDmFh8E&list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW&index=15)
 
 DFS matlab implementation, periodic singal example, dfs.m, idfs.m, s4.m, DFS of square wave train, relationship between frequency domain and time domain, effect of each fourier series coefficients on the singal in time domain (after synthesis)
+
+### 8. Filters
+- [Digital Signal Processing Using Matlab 12 (Discrete Filters 1)](https://youtu.be/zvX_HDCXJJk?list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW)
+- [Digital Signal Processing Using Matlab 12 (Discrete Filters 2)](https://youtu.be/aGbWSTHyQVM?list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW)
+- [Digital Signal Processing Using Matlab 12 (Discrete Filters 3)](https://youtu.be/w9P-_fQMlIk?list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW)
+- [Digital Signal Processing Using Matlab 12 (Discrete Filters 4)](https://youtu.be/GvO_nbXkb1Q?list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW)
+- [Digital Signal Processing Using Matlab 12 (Discrete Filters 5)](https://youtu.be/9kJNfb-bhYo?list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW)
+- [Digital Signal Processing Using Matlab 12 (Discrete Filters 6)](https://youtu.be/xIC1he784rE?list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW)
+- [Digital Signal Processing Using Matlab 12 (Discrete Filters 7)](https://youtu.be/_mdOcOOC84E?list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW)
+
+time domain representation of Ideal Frequency Selective Filter (IFF), Non Ideal Frequency Selective Filter (NFF), moving average, difference, MA with different weights b_k, generalized moving average, windows (filters),
+box, kaiser, bartlett, hamming, van hann (old hanning), wvtool, freqz(B,A,N), effect of box, kasier, and hamming window
+
+
+
