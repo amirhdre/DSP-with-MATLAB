@@ -145,3 +145,159 @@ subplot(2,2,3); hold on;
 plot(W/pi, 20*log10(abs(HW))); grid on; axis tight;
 subplot(2,2,4); hold on;
 plot(W/pi, unwrap(angle(HW))); grid on; axis tight;
+
+%% apply filters to signal 
+
+nx = 0:1023;
+s = (1-(nx-500).^2/4).*exp(-(nx-500).^2/2/4);
+
+n = -10:1:10;
+h = sin(pi*n/4)./(pi*n); h(isnan(h))=0.25;
+[y,ny] = conv_m(s,nx,h,n); 
+
+figure
+subplot(2,1,1)
+plot(nx,s,'b'); axis tight; xlim([460,540]); hold on;
+plot(ny,y,'r'); 
+
+subplot(2,1,2); 
+sf = fft(s,1024);
+plot(linspace(0,pi,length(sf)/2), ...
+    abs(sf(1:length(sf)/2)), 'b'); hold on;
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2), ...
+    abs(sf1(1:length(sf1)/2)), 'r'); 
+
+%% continue ( apply filters to signal )
+
+[h,n] = sigshift(h,n,10); % causaul filter
+[y,ny] = conv_m(s,nx,h,n);
+
+subplot(2,1,1)
+plot(ny,y,'k'); 
+
+subplot(2,1,2); 
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2), ...
+    abs(sf1(1:length(sf1)/2)), 'k'); 
+
+%% continue (apply filters to signal)
+
+hw = h.*kaiser(21,5)';
+[y,ny] = conv_m(s,nx,hw,n);
+
+subplot(2,1,1);
+plot(ny,y,'g--');
+subplot(2,1,2);
+sf1 = fft(y,1024); 
+plot(linspace(0,pi,length(sf1)/2), ...
+    abs(sf1(1:length(sf1)/2)), 'g--'); 
+
+%% use fir function
+
+M = 21;
+wc = 0.1;
+wo = 0.4; % band-pass filter
+wind = 4; % kaiser
+
+nx = 0:1023;
+s = (1-(nx-500).^2/4).*exp(-(nx-500).^2/2/4);
+
+[b] = fir(M,wc,wo,wind);
+nb = 0:length(b)-1; % causal
+
+[y,ny] = conv_m(s,nx,b,nb); 
+
+figure
+subplot(2,1,1)
+plot(nx,s,'b'); axis tight; xlim([460,540]); hold on;
+plot(ny,y,'r'); 
+
+subplot(2,1,2); 
+sf = fft(s,1024);
+plot(linspace(0,pi,length(sf)/2), ...
+    abs(sf(1:length(sf)/2)), 'b'); hold on;
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2), ...
+    abs(sf1(1:length(sf1)/2)), 'r'); 
+
+%% fir1, fir2, firpm (Parks-McClellan optimal equiripple FIR filter design)  
+
+% f = [0 0.25 0.75 1];
+% a = [0 1 1 0];
+
+% a band-pass filter
+f = [0 0.1 0.25 0.75 0.9 1];
+a = [0 0    1    1    0   0];
+bpm = firpm(25, f, a);
+[H,W] = freqz(bpm,1,256);
+
+figure
+subplot(2,2,1)
+stem(bpm); xlabel('n'); ylabel('h[n]'); axis tight;
+subplot(2,2,2)
+plot(f,a,'k'); hold on;
+plot(W/pi,abs(H),'r'); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3)
+plot(W/pi,20*log10(abs(H))); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4)
+plot(W/pi, unwrap(angle(H))); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+%% firpm (Parks-McClellan optimal equiripple FIR filter design)
+
+% a low-pass filter
+f = [0 0.37 0.43 1];
+a = [1 1 0 0];
+bpm = firpm(42, f, a);
+[H,W] = freqz(bpm,1,256);
+
+figure
+subplot(2,2,1); hold on;
+stem(bpm); xlabel('n'); ylabel('h[n]'); axis tight;
+subplot(2,2,2); hold on;
+plot(W/pi,abs(H)); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3); hold on;
+plot(W/pi,20*log10(abs(H))); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4); hold on;
+plot(W/pi, unwrap(angle(H))); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+bpm = firpm(82, f, a);  % increase number of points 
+[H,W] = freqz(bpm,1,256);
+
+subplot(2,2,1); 
+stem(bpm); xlabel('n'); ylabel('h[n]'); axis tight;
+subplot(2,2,2)
+plot(W/pi,abs(H)); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3); 
+plot(W/pi,20*log10(abs(H))); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4);
+plot(W/pi, unwrap(angle(H))); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+%% firgr (Generalized Remez FIR filter design)
+
+br = firgr(42, [0 0.37 0.43 1], [1 1  0 0], [1 10], 'minphase');
+[H,W] = freqz(br,1,256);
+
+subplot(2,2,1); 
+stem(br); xlabel('n'); ylabel('h[n]'); axis tight;
+subplot(2,2,2); 
+plot(W/pi,abs(H)); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3); 
+plot(W/pi,20*log10(abs(H))); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4); 
+plot(W/pi, unwrap(angle(H))); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+%% firls (Linear-phase FIR filter design using least-squares error minimization)
+
+br = firls(42, [0 0.37 0.43 1], [1 1  0 0]);
+[H,W] = freqz(br,1,256);
+
+subplot(2,2,1); 
+stem(br); xlabel('n'); ylabel('h[n]'); axis tight;
+subplot(2,2,2); 
+plot(W/pi,abs(H)); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3); 
+plot(W/pi,20*log10(abs(H))); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4); 
+plot(W/pi, unwrap(angle(H))); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+

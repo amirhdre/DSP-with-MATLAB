@@ -57,6 +57,6 @@ DFS matlab implementation, periodic singal example, dfs.m, idfs.m, s4.m, DFS of 
 
 time domain representation of Ideal Frequency Selective Filter (IFF), Non Ideal Frequency Selective Filter (NFF), moving average, difference, MA with different weights b_k, generalized moving average, windows (filters),
 box, kaiser, bartlett, hamming, van hann (old hanning), wvtool, freqz(B,A,N), effect of box, kasier, and hamming window
-
-
+apply filters to signal, use fir function, fir1, fir2, firpm (Parks-McClellan optimal equiripple FIR filter design), firpm (Parks-McClellan optimal equiripple FIR filter design), 
+firgr (Generalized Remez FIR filter design), firls (Linear-phase FIR filter design using least-squares error minimization), fircls (Linear-phase FIR filter design by constrained least-squares)
 
