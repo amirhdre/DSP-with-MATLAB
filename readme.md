@@ -11,9 +11,9 @@ You can access the course here: [Digital Signal Processing With Matlab](https://
 Also, the main website of this repository is [here](https://amirhdre.github.io/DSP-with-MATLAB/) - You can view published MATLAB codes in this website.
 
 1. [S1](s1/s1.html)
-2. [S2](s2/s1.html)
-3. [S3](s3/s1.html)
-4. [S4](s4/s1.html)
+2. [S2](s2/s2.html)
+3. [S3](s3/s3.html)
+4. [S4](s4/s4.html)
 5. [S5](s5/s5.html)
 6. [S5-2](s5-2/s5_2.html)
 
