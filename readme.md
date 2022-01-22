@@ -8,6 +8,13 @@ All of the codes in this repo are based on Dr. Po Chen's course of DSP in Youtub
 
 You can access the course here: [Digital Signal Processing With Matlab](https://www.youtube.com/playlist?list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW)
 
+1. [S1](s1/s1.html)
+2. [S2](s2/s1.html)
+3. [S3](s3/s1.html)
+4. [S4](s4/s1.html)
+5. [S5](s5/s5.html)
+6. [S5-2](s5-2/s5_2.html)
+
 ### 1. Matlab Crashcourse 1,2,3
 - [Matlab Crash Course 1](https://www.youtube.com/watch?v=y5PTcskuldE&list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW&index=1)
 - [Matlab Crash Course 2](https://www.youtube.com/watch?v=OU7F16yPffI&list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW&index=2)
