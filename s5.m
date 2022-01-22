@@ -301,3 +301,4 @@ plot(W/pi,20*log10(abs(H))); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; ax
 subplot(2,2,4); 
 plot(W/pi, unwrap(angle(H))); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
 
+
