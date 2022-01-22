@@ -8,6 +8,8 @@ All of the codes in this repo are based on Dr. Po Chen's course of DSP in Youtub
 
 You can access the course here: [Digital Signal Processing With Matlab](https://www.youtube.com/playlist?list=PLX8cYDJmWL1mfq6BI-klKB7YzRdJZ2_WW)
 
+Also, the main website of this repository is [here](https://amirhdre.github.io/DSP-with-MATLAB/) - You can view published MATLAB codes in this website.
+
 1. [S1](s1/s1.html)
 2. [S2](s2/s1.html)
 3. [S3](s3/s1.html)
