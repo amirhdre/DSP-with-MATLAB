@@ -1,0 +1,349 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>s4</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-01-22"><meta name="DC.source" content="s4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">compare inverse DFS and original signal</a></li><li><a href="#2">DSF example with sine waves</a></li><li><a href="#3">square wave train (periodic in time)</a></li><li><a href="#4">synthensis formula</a></li><li><a href="#5">Aperiodic Square Wave</a></li></ul></div><h2 id="1">compare inverse DFS and original signal</h2><pre class="codeinput">figure
+x = randn(1,10);
+stem(x);
+X=dfs(x,10);
+x1 = idfs(X,10);
+hold <span class="string">on</span>;
+stem(real(x1));
+
+figure
+subplot(2,1,1)
+stem(real(X)); xlim([-1,11])
+subplot(2,1,2)
+stem(imag(X)); xlim([-1,11])
+</pre><img vspace="5" hspace="5" src="s4_01.png" style="width:934px;height:712px;" alt=""> <img vspace="5" hspace="5" src="s4_02.png" style="width:934px;height:712px;" alt=""> <h2 id="2">DSF example with sine waves</h2><pre class="codeinput">N = 100;
+n = 0:1:N-1;
+x = 1+sin(2*pi*n/N)+3*cos(2*pi*n/N)+cos(4*pi*n/N+pi/2);
+figure
+subplot(4,1,1); stem(n,sin(2*pi*n/N));
+subplot(4,1,2); stem(3*cos(2*pi*n/N))
+subplot(4,1,3); stem(cos(4*pi*n/N+pi/2))
+subplot(4,1,4); stem(n,x)
+
+X = dfs(x,N);
+</pre><img vspace="5" hspace="5" src="s4_03.png" style="width:934px;height:712px;" alt=""> <h2 id="3">square wave train (periodic in time)</h2><p>periodic square train</p><pre class="codeinput">N = 99; <span class="comment">% 11 17 41 73</span>
+N1 = 2;
+
+x0 = zeros([1 N]);
+nx0 = -(N-1)/2:1:(N-1)/2;
+x0(abs(nx0)&lt;=N1) = 1;
+x = repmat(x0, 1, 5);
+nx = -(length(x)-1)/2:1:(length(x)-1)/2;
+
+figure
+stem(nx,x); hold <span class="string">on</span>;
+stem(nx0,x0)
+
+<span class="comment">% calculate DSF with DFS analysis formula</span>
+k = nx0;
+a = x0*exp(-1i*2*pi/N*k'*nx0)/N;
+
+<span class="comment">% calculate DFS with analytical method</span>
+O = 2*pi*k/N;
+b = sin((2*N1+1)*O/2)./sin(O/2)/N;
+b(isnan(b)) = (2*N1+1)/N;
+
+figure
+stem(O,real(a)*N); hold <span class="string">on</span>;
+stem(O,N*b)
+
+<span class="comment">%       you can increase N and see the effect. When we have N=9, we have 9</span>
+<span class="comment">% sample in frequency domain. When we have N=11, we get 11 sample in</span>
+<span class="comment">% frequency domain, and etc.</span>
+
+<span class="comment">%       Rule of thumb: Increasing N in time gives you denser sample in fequency.</span>
+<span class="comment">% this is apparent because Omega is getting denser. At the same time, k</span>
+<span class="comment">% change and is from -(N-1)/2 to (N-1)/2 (length=N).</span>
+
+<span class="comment">%       Base on above: What happen if you increase N to infinity?</span>
+<span class="comment">% answer: the time axis becomes so dense that we get a continuous function.</span>
+<span class="comment">% Here we can see how time and frequency axis can be related! Increasing</span>
+<span class="comment">% the period in the time domain == increasing the number of samples (denser</span>
+<span class="comment">% frequency axis) in frequency domain. As long as the shape of one period</span>
+<span class="comment">% not change in time, the frequncy shape will not change.</span>
+</pre><img vspace="5" hspace="5" src="s4_04.png" style="width:934px;height:712px;" alt=""> <img vspace="5" hspace="5" src="s4_05.png" style="width:934px;height:712px;" alt=""> <h2 id="4">synthensis formula</h2><pre class="codeinput">c = (N-1)/2+1;
+
+k = 0;
+x0 = a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+figure
+stem(nx,x); ylim([-0.2,1.3]); hold <span class="string">on</span>;
+stem(nx,real(x0),<span class="string">'r'</span>); hold <span class="string">off</span>;
+
+pause(1)
+
+k = 1;
+x1 = x0 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+k = -1;
+x1 = x1 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+stem(nx,x); ylim([-0.2,1.3]); hold <span class="string">on</span>;
+stem(nx,real(x1),<span class="string">'r'</span>); hold <span class="string">off</span>;
+
+pause(1)
+
+k = 2;
+x2 = x1 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+k = -2;
+x2 = x2 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+stem(nx,x); ylim([-0.2,1.3]); hold <span class="string">on</span>;
+stem(nx,real(x2),<span class="string">'r'</span>); hold <span class="string">off</span>;
+
+pause(1)
+
+k = 3;
+x3 = x2 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+k = -3;
+x3 = x3 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+stem(nx,x); ylim([-0.2,1.3]); hold <span class="string">on</span>;
+stem(nx,real(x3),<span class="string">'r'</span>); hold <span class="string">off</span>;
+
+pause(1)
+
+k = 4;
+x4 = x3 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+k = -4;
+x4 = x4 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+stem(nx,x); ylim([-0.2,1.3]); hold <span class="string">on</span>;
+stem(nx,real(x4),<span class="string">'r'</span>); hold <span class="string">off</span>;
+
+<span class="comment">%       a fun fact: because the frequency is descrete, we don't see</span>
+<span class="comment">% the Gibbs phenomenon. The gibbs happen when the frequency axis is</span>
+<span class="comment">% continuous and we can't capture and synthesize all of the frequency</span>
+<span class="comment">% components from the frequency domain to the time domain.</span>
+<span class="comment">%       Here, because the frequency is descrete, we were able to eventually</span>
+<span class="comment">% return all of the frequency components from frequency domain to the time</span>
+<span class="comment">% domain.</span>
+</pre><img vspace="5" hspace="5" src="s4_06.png" style="width:934px;height:712px;" alt=""> <h2 id="5">Aperiodic Square Wave</h2><pre class="codeinput">N1 = 2;
+
+Omega = -4*pi:0.01:4*pi;
+X = sin((2*N1+1)*Omega/2)./sin(Omega/2);
+
+figure
+plot(Omega,X,<span class="string">'k'</span>); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s4_07.png" style="width:934px;height:712px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% compare inverse DFS and original signal
+figure
+x = randn(1,10);
+stem(x);
+X=dfs(x,10);
+x1 = idfs(X,10);
+hold on;
+stem(real(x1)); 
+
+figure
+subplot(2,1,1)
+stem(real(X)); xlim([-1,11])
+subplot(2,1,2)
+stem(imag(X)); xlim([-1,11])
+
+%% DSF example with sine waves
+
+N = 100;
+n = 0:1:N-1;
+x = 1+sin(2*pi*n/N)+3*cos(2*pi*n/N)+cos(4*pi*n/N+pi/2);
+figure
+subplot(4,1,1); stem(n,sin(2*pi*n/N)); 
+subplot(4,1,2); stem(3*cos(2*pi*n/N))
+subplot(4,1,3); stem(cos(4*pi*n/N+pi/2))
+subplot(4,1,4); stem(n,x)
+
+X = dfs(x,N);
+
+%% square wave train (periodic in time)
+% periodic square train
+
+N = 99; % 11 17 41 73
+N1 = 2;
+
+x0 = zeros([1 N]);
+nx0 = -(N-1)/2:1:(N-1)/2;
+x0(abs(nx0)<=N1) = 1;
+x = repmat(x0, 1, 5);
+nx = -(length(x)-1)/2:1:(length(x)-1)/2;
+
+figure
+stem(nx,x); hold on;
+stem(nx0,x0)
+
+% calculate DSF with DFS analysis formula 
+k = nx0;
+a = x0*exp(-1i*2*pi/N*k'*nx0)/N;
+
+% calculate DFS with analytical method 
+O = 2*pi*k/N;
+b = sin((2*N1+1)*O/2)./sin(O/2)/N;
+b(isnan(b)) = (2*N1+1)/N; 
+
+figure
+stem(O,real(a)*N); hold on;
+stem(O,N*b)
+
+%       you can increase N and see the effect. When we have N=9, we have 9
+% sample in frequency domain. When we have N=11, we get 11 sample in
+% frequency domain, and etc. 
+
+%       Rule of thumb: Increasing N in time gives you denser sample in fequency.
+% this is apparent because Omega is getting denser. At the same time, k
+% change and is from -(N-1)/2 to (N-1)/2 (length=N). 
+
+%       Base on above: What happen if you increase N to infinity? 
+% answer: the time axis becomes so dense that we get a continuous function.
+% Here we can see how time and frequency axis can be related! Increasing
+% the period in the time domain == increasing the number of samples (denser
+% frequency axis) in frequency domain. As long as the shape of one period
+% not change in time, the frequncy shape will not change. 
+
+%% synthensis formula 
+
+c = (N-1)/2+1;
+
+k = 0;
+x0 = a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+figure
+stem(nx,x); ylim([-0.2,1.3]); hold on; 
+stem(nx,real(x0),'r'); hold off;
+
+pause(1)
+
+k = 1;
+x1 = x0 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+k = -1;
+x1 = x1 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+stem(nx,x); ylim([-0.2,1.3]); hold on; 
+stem(nx,real(x1),'r'); hold off;
+
+pause(1)
+
+k = 2;
+x2 = x1 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+k = -2;
+x2 = x2 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+stem(nx,x); ylim([-0.2,1.3]); hold on; 
+stem(nx,real(x2),'r'); hold off;
+
+pause(1)
+
+k = 3;
+x3 = x2 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+k = -3;
+x3 = x3 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+stem(nx,x); ylim([-0.2,1.3]); hold on; 
+stem(nx,real(x3),'r'); hold off;
+
+pause(1)
+
+k = 4;
+x4 = x3 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+k = -4;
+x4 = x4 + a(c+k)*exp(1i*k*(2*pi/N)*nx);
+
+stem(nx,x); ylim([-0.2,1.3]); hold on; 
+stem(nx,real(x4),'r'); hold off;
+
+%       a fun fact: because the frequency is descrete, we don't see 
+% the Gibbs phenomenon. The gibbs happen when the frequency axis is 
+% continuous and we can't capture and synthesize all of the frequency
+% components from the frequency domain to the time domain. 
+%       Here, because the frequency is descrete, we were able to eventually
+% return all of the frequency components from frequency domain to the time
+% domain.
+
+%% Aperiodic Square Wave
+
+N1 = 2;
+
+Omega = -4*pi:0.01:4*pi;
+X = sin((2*N1+1)*Omega/2)./sin(Omega/2);
+
+figure
+plot(Omega,X,'k'); axis tight;
+
+
+
+##### SOURCE END #####
+--></body></html>

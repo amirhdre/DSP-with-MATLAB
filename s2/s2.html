@@ -1,0 +1,254 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>s2</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-01-22"><meta name="DC.source" content="s2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">decompose signal</a></li><li><a href="#2">correlation</a></li><li><a href="#3">x = [3 11 7 0 -1 4 2];</a></li><li><a href="#4">covolution properties</a></li></ul></div><h2 id="1">decompose signal</h2><pre class="codeinput">n = -15:15;
+x = stepseq(0,-15,15) - stepseq(10,-15,15);
+stem(n,x)
+
+[xe,xo,m] = evenodd(x,n);
+subplot(2,2,1); stem(n,x); title(<span class="string">'rectangular pulse'</span>); axis <span class="string">tight</span>;
+subplot(2,2,2); stem(m,xe); title(<span class="string">'even part'</span>); axis <span class="string">tight</span>;
+subplot(2,2,3); stem(m,xo); title(<span class="string">'odd part'</span>); axis <span class="string">tight</span>;
+subplot(2,2,4); stem(m,xo+xe); title(<span class="string">'odd+even'</span>); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s2_01.png" style="width:934px;height:712px;" alt=""> <h2 id="2">correlation</h2><p>correlation is convolution after folding conv(x,y) = x{l)*y(l) corr(x,y) = x(l)*y(-l)</p><pre class="codeinput">x = [3 11 7 0 -1 4 2];
+nx = -3:3;
+
+h = [2 3 0 -5 2 1];
+nh = -1:4;
+
+[y,ny] = conv_m(x,nx,h,nh);
+
+subplot(3,1,1); stem(nx,x); xlim([-5 8]);
+subplot(3,1,2); stem(nh,h); xlim([-5 8]);
+subplot(3,1,3); stem(ny,y); xlim([-5 8]);
+</pre><img vspace="5" hspace="5" src="s2_02.png" style="width:934px;height:712px;" alt=""> <h2 id="3">x = [3 11 7 0 -1 4 2];</h2><p>y(n) = x(n-2)+w(n), w(n) is sequence of random noise compute the cross-correlation between y(n) and x(n)</p><pre class="codeinput">x = [3 11 7 0 -1 4 2];
+nx = -3:3;
+
+[y,ny] = sigshift(x,nx,2);
+
+w = randn(1, length(y));
+nw = ny;
+
+[y,ny] = sigadd(x,nx,w,nw);
+
+figure
+subplot(3,1,1); stem(nx,x); xlim([-7 7]);
+subplot(3,1,2); stem(ny,y); xlim([-7 7]);
+
+<span class="comment">% [x,nx] = sigfold(x,nx);</span>
+<span class="comment">% [rxy,nrxy] = conv_m(y,ny,x,nx);</span>
+[rxy, nrxy] = xcorr_m(x,nx,y,ny);
+subplot(3,1,3); stem(nrxy,rxy); xlim([-7 7]);
+
+hold <span class="string">on</span>
+
+[rxy, nrxy] = xcorr_m(y,ny,x,nx);
+subplot(3,1,3); stem(nrxy,rxy); xlim([-7 7]);
+</pre><img vspace="5" hspace="5" src="s2_03.png" style="width:934px;height:712px;" alt=""> <h2 id="4">covolution properties</h2><pre class="codeinput">nx1 = -5:25;
+x1 = cos(pi/4*nx1).*(stepseq(-5,-5,25)-stepseq(25,-5,25));
+figure
+subplot(4,1,1); stem(nx1,x1); xlim([-10 30]);
+
+nx2 = 0:20;
+x2 = (0.9).^nx2.*(stepseq(0,0,20)-stepseq(20,0,20));
+subplot(4,1,2); stem(nx2,x2); xlim([-10 30]);
+
+nx3 = -10:10;
+x3 = round(5*randn(size(nx3)));
+subplot(4,1,3); stem(nx3,x3); xlim([-10 30]);
+
+<span class="comment">% commutation</span>
+<span class="comment">% x1*x2=x2*x1</span>
+[y1,ny1] = conv_m(x1,nx1,x2,nx2);
+[y2,ny2] = conv_m(x2,nx2,x1,nx1);
+subplot(4,1,4); stem(ny1,y1,<span class="string">'k'</span>); hold <span class="string">on</span>; stem(ny2,y2,<span class="string">'r'</span>); hold <span class="string">off</span>;
+
+<span class="comment">% association</span>
+[yl,nyl] = conv_m(x1,nx1,x2,nx2);
+[yl,nyl] = conv_m(yl,nyl,x3,nx3);
+[yr,nyr] = conv_m(x2,nx2,x3,nx3);
+[yr,nyr] = conv_m(yr,nyr,x1,nx1);
+subplot(4,1,4); stem(nyl,yl,<span class="string">'k'</span>); hold <span class="string">on</span>; stem(nyr,yr,<span class="string">'r'</span>); hold <span class="string">off</span>;
+
+<span class="comment">% distribution</span>
+[yl,nyl] = sigadd(x2,nx2,x3,nx3);
+[yl,nyl] = conv_m(x1,nx1,yl,nyl);
+[yr1,nyr1] = conv_m(x1,nx1,x2,nx2);
+[yr2,nyr2] = conv_m(x1,nx1,x3,nx3);
+[yr,nyr] = sigadd(yr1,nyr1,yr2,nyr2);
+subplot(4,1,4); stem(nyl,yl); hold <span class="string">on</span>; stem(nyr,yr); hold <span class="string">off</span>;
+
+<span class="comment">% identity</span>
+n0 = 10;
+[yl,nyl] = impseq(10,-10,30);
+[yl,nyl] = conv_m(x1,nx1,yl,nyl);
+[yr,nyr] = sigshift(x1,nx1,n0);
+subplot(4,1,4); stem(nyl,yl); hold <span class="string">on</span>; stem(nyr,yr); hold <span class="string">off</span>;
+</pre><img vspace="5" hspace="5" src="s2_04.png" style="width:934px;height:712px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% decompose signal 
+
+n = -15:15;
+x = stepseq(0,-15,15) - stepseq(10,-15,15);
+stem(n,x)
+
+[xe,xo,m] = evenodd(x,n);
+subplot(2,2,1); stem(n,x); title('rectangular pulse'); axis tight;
+subplot(2,2,2); stem(m,xe); title('even part'); axis tight;
+subplot(2,2,3); stem(m,xo); title('odd part'); axis tight;
+subplot(2,2,4); stem(m,xo+xe); title('odd+even'); axis tight;
+
+%% correlation 
+% correlation is convolution after folding 
+% conv(x,y) = x{l)*y(l)
+% corr(x,y) = x(l)*y(-l)
+
+x = [3 11 7 0 -1 4 2];
+nx = -3:3;
+
+h = [2 3 0 -5 2 1];
+nh = -1:4;
+
+[y,ny] = conv_m(x,nx,h,nh);
+
+subplot(3,1,1); stem(nx,x); xlim([-5 8]);
+subplot(3,1,2); stem(nh,h); xlim([-5 8]);
+subplot(3,1,3); stem(ny,y); xlim([-5 8]);
+
+%% x = [3 11 7 0 -1 4 2];
+% y(n) = x(n-2)+w(n), w(n) is sequence of random noise
+% compute the cross-correlation between y(n) and x(n)
+
+x = [3 11 7 0 -1 4 2];
+nx = -3:3;
+
+[y,ny] = sigshift(x,nx,2);
+
+w = randn(1, length(y));
+nw = ny;
+
+[y,ny] = sigadd(x,nx,w,nw);
+
+figure
+subplot(3,1,1); stem(nx,x); xlim([-7 7]);
+subplot(3,1,2); stem(ny,y); xlim([-7 7]);
+
+% [x,nx] = sigfold(x,nx);
+% [rxy,nrxy] = conv_m(y,ny,x,nx);
+[rxy, nrxy] = xcorr_m(x,nx,y,ny);
+subplot(3,1,3); stem(nrxy,rxy); xlim([-7 7]);
+
+hold on
+
+[rxy, nrxy] = xcorr_m(y,ny,x,nx);
+subplot(3,1,3); stem(nrxy,rxy); xlim([-7 7]);
+
+%% covolution properties
+
+nx1 = -5:25;
+x1 = cos(pi/4*nx1).*(stepseq(-5,-5,25)-stepseq(25,-5,25));
+figure
+subplot(4,1,1); stem(nx1,x1); xlim([-10 30]);
+
+nx2 = 0:20;
+x2 = (0.9).^nx2.*(stepseq(0,0,20)-stepseq(20,0,20));
+subplot(4,1,2); stem(nx2,x2); xlim([-10 30]);
+
+nx3 = -10:10;
+x3 = round(5*randn(size(nx3)));
+subplot(4,1,3); stem(nx3,x3); xlim([-10 30]);
+
+% commutation
+% x1*x2=x2*x1
+[y1,ny1] = conv_m(x1,nx1,x2,nx2);
+[y2,ny2] = conv_m(x2,nx2,x1,nx1);
+subplot(4,1,4); stem(ny1,y1,'k'); hold on; stem(ny2,y2,'r'); hold off;
+
+% association 
+[yl,nyl] = conv_m(x1,nx1,x2,nx2);
+[yl,nyl] = conv_m(yl,nyl,x3,nx3);
+[yr,nyr] = conv_m(x2,nx2,x3,nx3);
+[yr,nyr] = conv_m(yr,nyr,x1,nx1);
+subplot(4,1,4); stem(nyl,yl,'k'); hold on; stem(nyr,yr,'r'); hold off;
+
+% distribution 
+[yl,nyl] = sigadd(x2,nx2,x3,nx3);
+[yl,nyl] = conv_m(x1,nx1,yl,nyl);
+[yr1,nyr1] = conv_m(x1,nx1,x2,nx2);
+[yr2,nyr2] = conv_m(x1,nx1,x3,nx3);
+[yr,nyr] = sigadd(yr1,nyr1,yr2,nyr2);
+subplot(4,1,4); stem(nyl,yl); hold on; stem(nyr,yr); hold off;
+
+% identity
+n0 = 10;
+[yl,nyl] = impseq(10,-10,30);
+[yl,nyl] = conv_m(x1,nx1,yl,nyl);
+[yr,nyr] = sigshift(x1,nx1,n0);
+subplot(4,1,4); stem(nyl,yl); hold on; stem(nyr,yr); hold off;
+##### SOURCE END #####
+--></body></html>

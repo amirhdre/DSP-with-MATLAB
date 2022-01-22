@@ -1,0 +1,448 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>s5_2</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-01-22"><meta name="DC.source" content="s5_2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">recusrive low-pass filter</a></li><li><a href="#3">fdatools</a></li><li><a href="#4">tf2zp, zp2tf</a></li><li><a href="#5">fvtool</a></li><li><a href="#6">butterworth filter</a></li><li><a href="#7">Chebyshev Type I</a></li><li><a href="#8">Chebyshev Type II</a></li><li><a href="#9">Eliptic</a></li><li><a href="#10">Use b,a coeffs to filter a signal with filter() function</a></li><li><a href="#11">Use filtfilt to have zero-phase filter</a></li><li><a href="#12">designfilt is the second way to use IIR filters</a></li></ul></div><pre class="codeinput">clc;
+clear;
+close <span class="string">all</span>;
+</pre><h2 id="2">recusrive low-pass filter</h2><p>y(n) = 0.5*y(n-1) + x(n)</p><pre class="codeinput">o = -pi:0.01:pi;
+H = 1./(1-0.5*exp(-1i*o));
+figure
+subplot(1,2,1);
+plot(o/pi,abs(H))
+subplot(1,2,2)
+plot(o/pi,unwrap(angle(H)))
+</pre><img vspace="5" hspace="5" src="s5_2_01.png" style="width:934px;height:712px;" alt=""> <h2 id="3">fdatools</h2><pre class="codeinput">o = -pi:0.01:pi;
+H = (sqrt(3)-1)/2*(exp(1i*o*2)-1)./(exp(1i*o*2)+2-sqrt(3));
+figure
+subplot(1,2,1);
+plot(o/pi,20*log10(abs(H))); ylim([-90,0])
+subplot(1,2,2)
+plot(o/pi,unwrap(angle(H)))
+
+<span class="comment">% question: design this with &lt;fdatools&gt;</span>
+
+NUM = [0.366000000000000 + 0.00000000000000i, <span class="keyword">...</span>
+    0.00000000000000 - 4.48220728487931e-17i, <span class="keyword">...</span>
+    -0.366000000000000 + 4.48220728487931e-17i];
+
+DEN = [1.00000000000000 + 0.00000000000000i, <span class="keyword">...</span>
+    -6.33877183238670e-17 + 1.11022302462516e-16i, <span class="keyword">...</span>
+    0.267909760000000 + 0.00000000000000i];
+</pre><img vspace="5" hspace="5" src="s5_2_02.png" style="width:934px;height:712px;" alt=""> <h2 id="4">tf2zp, zp2tf</h2><pre class="codeinput">[z,p,k] = tf2zp(NUM, DEN);
+[b,a] = zp2tf(z,p,k);
+</pre><h2 id="5">fvtool</h2><pre class="codeinput">fvtool(b,a,<span class="string">'polezero'</span>)
+</pre><img vspace="5" hspace="5" src="s5_2_03.png" style="width:1536px;height:678px;" alt=""> <h2 id="6">butterworth filter</h2><pre class="codeinput">[b,a] = butter(7, 0.12);
+[H,W] = freqz(b,a,256);
+
+figure
+subplot(2,2,[1,2])
+plot(W/pi,abs(H),<span class="string">'r'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H|'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>; hold <span class="string">on</span>;
+subplot(2,2,3)
+plot(W/pi,20*log10(abs(H)),<span class="string">'r'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H| dB'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>; hold <span class="string">on</span>;
+subplot(2,2,4)
+plot(W/pi, unwrap(angle(H)),<span class="string">'r'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'angle (rad)'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>; hold <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="s5_2_04.png" style="width:934px;height:712px;" alt=""> <h2 id="7">Chebyshev Type I</h2><pre class="codeinput">[b,a] = cheby1(7, 1, 0.12);
+[H2,W] = freqz(b,a,256);
+
+subplot(2,2,[1,2])
+plot(W/pi,abs(H2),<span class="string">'g'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H|'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,3)
+plot(W/pi,20*log10(abs(H2)),<span class="string">'g'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H| dB'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,4)
+plot(W/pi, unwrap(angle(H2)),<span class="string">'g'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'angle (rad)'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s5_2_05.png" style="width:934px;height:712px;" alt=""> <h2 id="8">Chebyshev Type II</h2><pre class="codeinput">[b,a] = cheby2(5, 60, 0.3);
+[H3,W] = freqz(b,a,256);
+
+subplot(2,2,[1,2])
+plot(W/pi,abs(H3),<span class="string">'b'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H|'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,3)
+plot(W/pi,20*log10(abs(H3)),<span class="string">'b'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H| dB'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,4)
+plot(W/pi, unwrap(angle(H3)),<span class="string">'b'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'angle (rad)'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s5_2_06.png" style="width:934px;height:712px;" alt=""> <h2 id="9">Eliptic</h2><pre class="codeinput">[b,a] = ellip(4, 1, 60, 0.1);
+[H4,W] = freqz(b,a,256);
+
+subplot(2,2,[1,2])
+plot(W/pi,abs(H4),<span class="string">'k'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H|'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,3)
+plot(W/pi,20*log10(abs(H4)),<span class="string">'k'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H| dB'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,4)
+plot(W/pi, unwrap(angle(H4)),<span class="string">'k'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'angle (rad)'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s5_2_07.png" style="width:934px;height:712px;" alt=""> <h2 id="10">Use b,a coeffs to filter a signal with filter() function</h2><pre class="codeinput">nx = 0:1023;
+x = (1-(nx-500).^2/4).*exp(-(nx-500).^2/2/4);
+
+[b,a] = butter(7, 0.3);
+
+y = filter(b,a,x);
+
+figure
+subplot(2,1,1)
+plot(nx,x,<span class="string">'b'</span>); axis <span class="string">tight</span>; xlim([460,540]); hold <span class="string">on</span>;
+plot(nx,y,<span class="string">'r'</span>);
+
+subplot(2,1,2);
+sf = fft(x,1024);
+plot(linspace(0,pi,length(sf)/2)/pi, <span class="keyword">...</span>
+    abs(sf(1:length(sf)/2)), <span class="string">'b'</span>); hold <span class="string">on</span>;
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2)/pi, <span class="keyword">...</span>
+    abs(sf1(1:length(sf1)/2)), <span class="string">'r'</span>);
+</pre><img vspace="5" hspace="5" src="s5_2_08.png" style="width:934px;height:712px;" alt=""> <h2 id="11">Use filtfilt to have zero-phase filter</h2><pre class="codeinput"><span class="comment">% caution, amplitude is applied twice, but phase is cancelled out</span>
+
+y = filtfilt(b,a,x);
+
+subplot(2,1,1)
+plot(nx,y,<span class="string">'k'</span>);
+
+subplot(2,1,2);
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2)/pi, <span class="keyword">...</span>
+    abs(sf1(1:length(sf1)/2)), <span class="string">'k'</span>);
+</pre><img vspace="5" hspace="5" src="s5_2_09.png" style="width:934px;height:712px;" alt=""> <h2 id="12">designfilt is the second way to use IIR filters</h2><pre class="codeinput">Fs = 2000; <span class="comment">% sampling frequency -&gt; Niquist-freq is Fs/2</span>
+Fp = 100; <span class="comment">% Hz - passband corner</span>
+Fst = 300; <span class="comment">% stopband frequency</span>
+Ap = 1.0; <span class="comment">% dB - passband ripple amplitude</span>
+Ast = 60; <span class="comment">% dB - stopband ripple amplitude</span>
+
+dbutter = designfilt(<span class="string">'lowpassiir'</span>, <span class="keyword">...</span>
+    <span class="string">'PassbandFrequency'</span>,Fp, <span class="keyword">...</span>
+    <span class="string">'StopbandFrequency'</span>,Fst, <span class="keyword">...</span>
+    <span class="string">'PassbandRipple'</span>,Ap, <span class="keyword">...</span>
+    <span class="string">'StopbandAttenuation'</span>,Ast, <span class="keyword">...</span>
+    <span class="string">'SampleRate'</span>,Fs, <span class="keyword">...</span>
+    <span class="string">'DesignMethod'</span>,<span class="string">'butter'</span>);
+filtord(dbutter)
+<span class="comment">% fvtool(dbutter)</span>
+
+y = filter(dbutter,x);
+
+subplot(2,1,1)
+plot(nx,y,<span class="string">'m'</span>);
+subplot(2,1,2);
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2)/pi, <span class="keyword">...</span>
+    abs(sf1(1:length(sf1)/2)), <span class="string">'m'</span>);
+</pre><pre class="codeoutput">
+ans =
+
+     7
+
+</pre><img vspace="5" hspace="5" src="s5_2_10.png" style="width:934px;height:712px;" alt=""> <pre class="codeinput">Fs = 2000; <span class="comment">% sampling frequency -&gt; Niquist-freq is Fs/2</span>
+Fp = 100; <span class="comment">% Hz - passband corner</span>
+Fst = 300; <span class="comment">% stopband frequency</span>
+Ap = 1.0; <span class="comment">% dB - passband ripple amplitude</span>
+Ast = 60; <span class="comment">% dB - stopband ripple amplitude</span>
+
+dbutter = designfilt(<span class="string">'lowpassiir'</span>, <span class="keyword">...</span>
+    <span class="string">'PassbandFrequency'</span>,Fp, <span class="keyword">...</span>
+    <span class="string">'StopbandFrequency'</span>,Fst, <span class="keyword">...</span>
+    <span class="string">'PassbandRipple'</span>,Ap, <span class="keyword">...</span>
+    <span class="string">'StopbandAttenuation'</span>,Ast, <span class="keyword">...</span>
+    <span class="string">'SampleRate'</span>,Fs, <span class="keyword">...</span>
+    <span class="string">'DesignMethod'</span>,<span class="string">'butter'</span>);
+
+dcheby1 = designfilt(<span class="string">'lowpassiir'</span>, <span class="keyword">...</span>
+    <span class="string">'PassbandFrequency'</span>,Fp, <span class="keyword">...</span>
+    <span class="string">'StopbandFrequency'</span>,Fst, <span class="keyword">...</span>
+    <span class="string">'PassbandRipple'</span>,Ap, <span class="keyword">...</span>
+    <span class="string">'StopbandAttenuation'</span>,Ast, <span class="keyword">...</span>
+    <span class="string">'SampleRate'</span>,Fs, <span class="keyword">...</span>
+    <span class="string">'DesignMethod'</span>,<span class="string">'cheby1'</span>);
+
+dcheby2 = designfilt(<span class="string">'lowpassiir'</span>, <span class="keyword">...</span>
+    <span class="string">'PassbandFrequency'</span>,Fp, <span class="keyword">...</span>
+    <span class="string">'StopbandFrequency'</span>,Fst, <span class="keyword">...</span>
+    <span class="string">'PassbandRipple'</span>,Ap, <span class="keyword">...</span>
+    <span class="string">'StopbandAttenuation'</span>,Ast, <span class="keyword">...</span>
+    <span class="string">'SampleRate'</span>,Fs, <span class="keyword">...</span>
+    <span class="string">'DesignMethod'</span>,<span class="string">'cheby2'</span>);
+
+dellip = designfilt(<span class="string">'lowpassiir'</span>, <span class="keyword">...</span>
+    <span class="string">'PassbandFrequency'</span>,Fp, <span class="keyword">...</span>
+    <span class="string">'StopbandFrequency'</span>,Fst, <span class="keyword">...</span>
+    <span class="string">'PassbandRipple'</span>,Ap, <span class="keyword">...</span>
+    <span class="string">'StopbandAttenuation'</span>,Ast, <span class="keyword">...</span>
+    <span class="string">'SampleRate'</span>,Fs, <span class="keyword">...</span>
+    <span class="string">'DesignMethod'</span>,<span class="string">'ellip'</span>);
+
+ford = [filtord(dbutter), filtord(dcheby1), filtord(dcheby2), filtord(dellip)];
+figure; hfv = fvtool(dbutter, dcheby1, dcheby2, dellip, <span class="string">'Analysis'</span>, <span class="string">'grpdelay'</span>);
+legend(hfv,<span class="string">'Butterworth'</span>,<span class="string">'Chebyshev I'</span>, <span class="string">'Chebyshev II'</span>, <span class="string">'Elliptic'</span>);
+
+figure; hfv = fvtool(dbutter, dcheby1, dcheby2, dellip, <span class="string">'polezero'</span>);
+legend(hfv,<span class="string">'Butterworth'</span>,<span class="string">'Chebyshev I'</span>, <span class="string">'Chebyshev II'</span>, <span class="string">'Elliptic'</span>);
+</pre><img vspace="5" hspace="5" src="s5_2_11.png" style="width:934px;height:712px;" alt=""> <img vspace="5" hspace="5" src="s5_2_12.png" style="width:1536px;height:678px;" alt=""> <img vspace="5" hspace="5" src="s5_2_13.png" style="width:934px;height:712px;" alt=""> <img vspace="5" hspace="5" src="s5_2_14.png" style="width:1536px;height:678px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clc;
+clear;
+close all;
+
+%% recusrive low-pass filter
+% y(n) = 0.5*y(n-1) + x(n)
+
+o = -pi:0.01:pi;
+H = 1./(1-0.5*exp(-1i*o));
+figure
+subplot(1,2,1);
+plot(o/pi,abs(H))
+subplot(1,2,2)
+plot(o/pi,unwrap(angle(H)))
+
+%% fdatools
+ 
+o = -pi:0.01:pi;
+H = (sqrt(3)-1)/2*(exp(1i*o*2)-1)./(exp(1i*o*2)+2-sqrt(3));
+figure
+subplot(1,2,1); 
+plot(o/pi,20*log10(abs(H))); ylim([-90,0])
+subplot(1,2,2)
+plot(o/pi,unwrap(angle(H)))
+
+% question: design this with <fdatools>
+
+NUM = [0.366000000000000 + 0.00000000000000i, ...
+    0.00000000000000 - 4.48220728487931e-17i, ...
+    -0.366000000000000 + 4.48220728487931e-17i];
+
+DEN = [1.00000000000000 + 0.00000000000000i, ...
+    -6.33877183238670e-17 + 1.11022302462516e-16i, ...
+    0.267909760000000 + 0.00000000000000i];
+
+%% tf2zp, zp2tf
+
+[z,p,k] = tf2zp(NUM, DEN);
+[b,a] = zp2tf(z,p,k);
+
+%% fvtool
+ 
+fvtool(b,a,'polezero')
+
+%% butterworth filter
+
+[b,a] = butter(7, 0.12);
+[H,W] = freqz(b,a,256);
+
+figure
+subplot(2,2,[1,2])
+plot(W/pi,abs(H),'r'); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight; hold on;
+subplot(2,2,3)
+plot(W/pi,20*log10(abs(H)),'r'); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight; hold on;
+subplot(2,2,4)
+plot(W/pi, unwrap(angle(H)),'r'); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight; hold on;
+
+%% Chebyshev Type I
+
+[b,a] = cheby1(7, 1, 0.12);
+[H2,W] = freqz(b,a,256);
+
+subplot(2,2,[1,2])
+plot(W/pi,abs(H2),'g'); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3)
+plot(W/pi,20*log10(abs(H2)),'g'); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4)
+plot(W/pi, unwrap(angle(H2)),'g'); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+%% Chebyshev Type II
+
+[b,a] = cheby2(5, 60, 0.3);
+[H3,W] = freqz(b,a,256);
+
+subplot(2,2,[1,2])
+plot(W/pi,abs(H3),'b'); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3)
+plot(W/pi,20*log10(abs(H3)),'b'); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4)
+plot(W/pi, unwrap(angle(H3)),'b'); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+%% Eliptic 
+
+[b,a] = ellip(4, 1, 60, 0.1);
+[H4,W] = freqz(b,a,256);
+
+subplot(2,2,[1,2])
+plot(W/pi,abs(H4),'k'); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3)
+plot(W/pi,20*log10(abs(H4)),'k'); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4)
+plot(W/pi, unwrap(angle(H4)),'k'); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+%% Use b,a coeffs to filter a signal with filter() function
+
+nx = 0:1023;
+x = (1-(nx-500).^2/4).*exp(-(nx-500).^2/2/4);
+
+[b,a] = butter(7, 0.3);
+
+y = filter(b,a,x);
+
+figure
+subplot(2,1,1)
+plot(nx,x,'b'); axis tight; xlim([460,540]); hold on;
+plot(nx,y,'r'); 
+
+subplot(2,1,2); 
+sf = fft(x,1024);
+plot(linspace(0,pi,length(sf)/2)/pi, ...
+    abs(sf(1:length(sf)/2)), 'b'); hold on;
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2)/pi, ...
+    abs(sf1(1:length(sf1)/2)), 'r'); 
+
+%% Use filtfilt to have zero-phase filter 
+
+% caution, amplitude is applied twice, but phase is cancelled out
+
+y = filtfilt(b,a,x);
+
+subplot(2,1,1)
+plot(nx,y,'k'); 
+
+subplot(2,1,2); 
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2)/pi, ...
+    abs(sf1(1:length(sf1)/2)), 'k'); 
+
+%% designfilt is the second way to use IIR filters
+
+Fs = 2000; % sampling frequency -> Niquist-freq is Fs/2
+Fp = 100; % Hz - passband corner 
+Fst = 300; % stopband frequency
+Ap = 1.0; % dB - passband ripple amplitude
+Ast = 60; % dB - stopband ripple amplitude
+
+dbutter = designfilt('lowpassiir', ...
+    'PassbandFrequency',Fp, ...
+    'StopbandFrequency',Fst, ...
+    'PassbandRipple',Ap, ...
+    'StopbandAttenuation',Ast, ...
+    'SampleRate',Fs, ...
+    'DesignMethod','butter');
+filtord(dbutter)
+% fvtool(dbutter)
+
+y = filter(dbutter,x);
+
+subplot(2,1,1)
+plot(nx,y,'m'); 
+subplot(2,1,2); 
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2)/pi, ...
+    abs(sf1(1:length(sf1)/2)), 'm'); 
+
+%%
+
+Fs = 2000; % sampling frequency -> Niquist-freq is Fs/2
+Fp = 100; % Hz - passband corner 
+Fst = 300; % stopband frequency
+Ap = 1.0; % dB - passband ripple amplitude
+Ast = 60; % dB - stopband ripple amplitude
+
+dbutter = designfilt('lowpassiir', ...
+    'PassbandFrequency',Fp, ...
+    'StopbandFrequency',Fst, ...
+    'PassbandRipple',Ap, ...
+    'StopbandAttenuation',Ast, ...
+    'SampleRate',Fs, ...
+    'DesignMethod','butter');
+
+dcheby1 = designfilt('lowpassiir', ...
+    'PassbandFrequency',Fp, ...
+    'StopbandFrequency',Fst, ...
+    'PassbandRipple',Ap, ...
+    'StopbandAttenuation',Ast, ...
+    'SampleRate',Fs, ...
+    'DesignMethod','cheby1');
+
+dcheby2 = designfilt('lowpassiir', ...
+    'PassbandFrequency',Fp, ...
+    'StopbandFrequency',Fst, ...
+    'PassbandRipple',Ap, ...
+    'StopbandAttenuation',Ast, ...
+    'SampleRate',Fs, ...
+    'DesignMethod','cheby2');
+
+dellip = designfilt('lowpassiir', ...
+    'PassbandFrequency',Fp, ...
+    'StopbandFrequency',Fst, ...
+    'PassbandRipple',Ap, ...
+    'StopbandAttenuation',Ast, ...
+    'SampleRate',Fs, ...
+    'DesignMethod','ellip');
+
+ford = [filtord(dbutter), filtord(dcheby1), filtord(dcheby2), filtord(dellip)];
+figure; hfv = fvtool(dbutter, dcheby1, dcheby2, dellip, 'Analysis', 'grpdelay');
+legend(hfv,'Butterworth','Chebyshev I', 'Chebyshev II', 'Elliptic');
+
+figure; hfv = fvtool(dbutter, dcheby1, dcheby2, dellip, 'polezero');
+legend(hfv,'Butterworth','Chebyshev I', 'Chebyshev II', 'Elliptic');
+
+
+
+
+##### SOURCE END #####
+--></body></html>

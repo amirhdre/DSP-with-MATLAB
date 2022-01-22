@@ -1,0 +1,634 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>s5</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-01-22"><meta name="DC.source" content="s5.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">time domain representation of Ideal Frequency Selective Filter (IFF)</a></li><li><a href="#2">Non Ideal Frequency Selective Filter (NFF)</a></li><li><a href="#3">moving average</a></li><li><a href="#4">MA with different weights b_k</a></li><li><a href="#5">windows (filters)</a></li><li><a href="#6">effect of the windows - box</a></li><li><a href="#7">effect of kasier window</a></li><li><a href="#8">effect of hamming window</a></li><li><a href="#9">apply filters to signal</a></li><li><a href="#10">continue ( apply filters to signal )</a></li><li><a href="#11">continue (apply filters to signal)</a></li><li><a href="#12">use fir function</a></li><li><a href="#13">fir1, fir2, firpm (Parks-McClellan optimal equiripple FIR filter design)</a></li><li><a href="#14">firpm (Parks-McClellan optimal equiripple FIR filter design)</a></li><li><a href="#15">firgr (Generalized Remez FIR filter design)</a></li><li><a href="#16">firls (Linear-phase FIR filter design using least-squares error minimization)</a></li></ul></div><h2 id="1">time domain representation of Ideal Frequency Selective Filter (IFF)</h2><pre class="codeinput">OmegaC = pi/4;
+n1 = -50:50;
+h = OmegaC/pi*sinc(OmegaC*n1/pi);
+stem(n1,h);
+axis <span class="string">tight</span>
+<span class="comment">% this is a box in frequency domain</span>
+</pre><img vspace="5" hspace="5" src="s5_01.png" style="width:934px;height:712px;" alt=""> <h2 id="2">Non Ideal Frequency Selective Filter (NFF)</h2><pre class="codeinput"><span class="comment">% a three point average is a low pass filer:</span>
+<span class="comment">% y(n) = [x(n-1)+x(n)+x(n+1)]/3</span>
+<span class="comment">% H(w) = [1+2cos(w)]/3</span>
+
+o = -4*pi:0.01:4*pi;
+H = (1+2*cos(o))/3;
+figure
+subplot(2,1,1);
+plot(o,abs(H) );
+subplot(2,1,2);
+plot(o,angle(H) );
+
+<span class="comment">% a difference is a high pass filer:</span>
+<span class="comment">% y(n) = [x(n)-x(n-1)]/2</span>
+<span class="comment">% H(w) = je^(-jw/2)sin(w/2)</span>
+
+o = -4*pi:0.01:4*pi;
+H = exp(-1i*o/2)*1i.*(sin(o/2));
+figure
+subplot(2,1,1);
+plot(o,abs(H) );
+subplot(2,1,2);
+plot(o,angle(H) );
+</pre><img vspace="5" hspace="5" src="s5_02.png" style="width:934px;height:712px;" alt=""> <img vspace="5" hspace="5" src="s5_03.png" style="width:934px;height:712px;" alt=""> <h2 id="3">moving average</h2><pre class="codeinput">o = 0:0.01:1*pi;
+M = 16;
+N = 16;
+H = 1/(N+M+1)*exp(1i*o*(N-M)/2).*sin(o*(M+N+1)/2)./sin(o/2);
+figure
+subplot(2,1,1);
+plot(o,20*log10(abs(H)) ); axis <span class="string">tight</span>;
+subplot(2,1,2);
+plot(o,angle(H) ); axis <span class="string">tight</span>;
+
+<span class="comment">% effect of changing M,N</span>
+figure
+[M,N] = deal(16);
+H = 1/(N+M+1)*exp(1i*o*(N-M)/2).*sin(o*(M+N+1)/2)./sin(o/2);
+plot(o,20*log10(abs(H)) ); hold <span class="string">on</span>;
+
+[M,N] = deal(32);
+H = 1/(N+M+1)*exp(1i*o*(N-M)/2).*sin(o*(M+N+1)/2)./sin(o/2);
+plot(o,20*log10(abs(H)) ); hold <span class="string">on</span>;
+
+[M,N] = deal(64);
+H = 1/(N+M+1)*exp(1i*o*(N-M)/2).*sin(o*(M+N+1)/2)./sin(o/2);
+plot(o,20*log10(abs(H)) ); hold <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="s5_04.png" style="width:934px;height:712px;" alt=""> <img vspace="5" hspace="5" src="s5_05.png" style="width:934px;height:712px;" alt=""> <h2 id="4">MA with different weights b_k</h2><pre class="codeinput"><span class="comment">% ----------- weighted moving average</span>
+n1 = -100:100;
+h = 2/33*sinc(2*n1/33);
+idx = find(abs(n1)&gt;32);
+h(idx)=0;
+figure;stem(n1,h)
+
+
+M = 500;
+k = -M:M;
+w = (pi/M)*k;
+
+H = h*(exp(-1i*pi/M)).^(n1'*k);
+
+<span class="comment">% with fft</span>
+U = fftshift(fft(h,1001));
+
+<span class="comment">% ---------- simple moving average</span>
+[M,N] = deal(16);
+H2 = 1/(N+M+1)*exp(1i*w*(N-M)/2).*sin(w*(M+N+1)/2)./sin(w/2);
+
+figure;
+plot(w,20*log10(abs(H)),<span class="string">'b'</span>); xlim([-pi/4,pi/4]); hold <span class="string">on</span>;
+plot(w,20*log10(abs(H2)),<span class="string">'r'</span>);
+plot(w,20*log10(abs(U)),<span class="string">'g'</span>);
+</pre><img vspace="5" hspace="5" src="s5_06.png" style="width:934px;height:712px;" alt=""> <img vspace="5" hspace="5" src="s5_07.png" style="width:934px;height:712px;" alt=""> <h2 id="5">windows (filters)</h2><pre class="codeinput">L = 64;
+w1 = kaiser(L,0); <span class="comment">% beta is tapering</span>
+w2 = bartlett(L);
+w3 = hamming(L);
+w4 = kaiser(L,20);
+w5 = hanning(L);
+wvtool(w1,w2,w3,w4,w5);
+</pre><pre class="codeoutput">Warning: Cannot set Position while WindowStyle is 'docked' 
+</pre><img vspace="5" hspace="5" src="s5_08.png" style="width:1934px;height:1054px;" alt=""> <h2 id="6">effect of the windows - box</h2><pre class="codeinput">n1 = -10:10;
+h = sin(pi*n1/4)./(pi*n1); h(isnan(h))=0.25;
+figure
+stem(n1,h); hold <span class="string">on</span>;
+[h,n1] = sigshift(h,n1,10);
+stem(n1,h);
+
+<span class="comment">% freq(B,A,N)</span>
+[H,W] = freqz(h,1,265);
+figure
+subplot(2,2,1)
+stem(n1,h); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,2);
+plot(W/pi, abs(H)); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,3);
+plot(W/pi, 20*log10(abs(H))); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,4);
+plot(W/pi, unwrap(angle(H))); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s5_09.png" style="width:934px;height:712px;" alt=""> <img vspace="5" hspace="5" src="s5_10.png" style="width:934px;height:712px;" alt=""> <h2 id="7">effect of kasier window</h2><pre class="codeinput">hw = h.*kaiser(21,5)';
+[HW, W] = freqz(hw,1,265);
+<span class="comment">% figure</span>
+subplot(2,2,1); hold <span class="string">on</span>;
+stem(n1,hw); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,2); hold <span class="string">on</span>;
+plot(W/pi, abs(HW)); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,3); hold <span class="string">on</span>;
+plot(W/pi, 20*log10(abs(HW))); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,4); hold <span class="string">on</span>;
+plot(W/pi, unwrap(angle(HW))); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s5_11.png" style="width:934px;height:712px;" alt=""> <h2 id="8">effect of hamming window</h2><pre class="codeinput">hw = h.*hamming(21)';
+[HW, W] = freqz(hw,1,265);
+<span class="comment">% figure</span>
+subplot(2,2,1); hold <span class="string">on</span>;
+stem(n1,hw); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,2); hold <span class="string">on</span>;
+plot(W/pi, abs(HW)); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,3); hold <span class="string">on</span>;
+plot(W/pi, 20*log10(abs(HW))); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,4); hold <span class="string">on</span>;
+plot(W/pi, unwrap(angle(HW))); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s5_12.png" style="width:934px;height:712px;" alt=""> <h2 id="9">apply filters to signal</h2><pre class="codeinput">nx = 0:1023;
+s = (1-(nx-500).^2/4).*exp(-(nx-500).^2/2/4);
+
+n = -10:1:10;
+h = sin(pi*n/4)./(pi*n); h(isnan(h))=0.25;
+[y,ny] = conv_m(s,nx,h,n);
+
+figure
+subplot(2,1,1)
+plot(nx,s,<span class="string">'b'</span>); axis <span class="string">tight</span>; xlim([460,540]); hold <span class="string">on</span>;
+plot(ny,y,<span class="string">'r'</span>);
+
+subplot(2,1,2);
+sf = fft(s,1024);
+plot(linspace(0,pi,length(sf)/2), <span class="keyword">...</span>
+    abs(sf(1:length(sf)/2)), <span class="string">'b'</span>); hold <span class="string">on</span>;
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2), <span class="keyword">...</span>
+    abs(sf1(1:length(sf1)/2)), <span class="string">'r'</span>);
+</pre><img vspace="5" hspace="5" src="s5_13.png" style="width:934px;height:712px;" alt=""> <h2 id="10">continue ( apply filters to signal )</h2><pre class="codeinput">[h,n] = sigshift(h,n,10); <span class="comment">% causaul filter</span>
+[y,ny] = conv_m(s,nx,h,n);
+
+subplot(2,1,1)
+plot(ny,y,<span class="string">'k'</span>);
+
+subplot(2,1,2);
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2), <span class="keyword">...</span>
+    abs(sf1(1:length(sf1)/2)), <span class="string">'k'</span>);
+</pre><img vspace="5" hspace="5" src="s5_14.png" style="width:934px;height:712px;" alt=""> <h2 id="11">continue (apply filters to signal)</h2><pre class="codeinput">hw = h.*kaiser(21,5)';
+[y,ny] = conv_m(s,nx,hw,n);
+
+subplot(2,1,1);
+plot(ny,y,<span class="string">'g--'</span>);
+subplot(2,1,2);
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2), <span class="keyword">...</span>
+    abs(sf1(1:length(sf1)/2)), <span class="string">'g--'</span>);
+</pre><img vspace="5" hspace="5" src="s5_15.png" style="width:934px;height:712px;" alt=""> <h2 id="12">use fir function</h2><pre class="codeinput">M = 21;
+wc = 0.1;
+wo = 0.4; <span class="comment">% band-pass filter</span>
+wind = 4; <span class="comment">% kaiser</span>
+
+nx = 0:1023;
+s = (1-(nx-500).^2/4).*exp(-(nx-500).^2/2/4);
+
+[b] = fir(M,wc,wo,wind);
+nb = 0:length(b)-1; <span class="comment">% causal</span>
+
+[y,ny] = conv_m(s,nx,b,nb);
+
+figure
+subplot(2,1,1)
+plot(nx,s,<span class="string">'b'</span>); axis <span class="string">tight</span>; xlim([460,540]); hold <span class="string">on</span>;
+plot(ny,y,<span class="string">'r'</span>);
+
+subplot(2,1,2);
+sf = fft(s,1024);
+plot(linspace(0,pi,length(sf)/2), <span class="keyword">...</span>
+    abs(sf(1:length(sf)/2)), <span class="string">'b'</span>); hold <span class="string">on</span>;
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2), <span class="keyword">...</span>
+    abs(sf1(1:length(sf1)/2)), <span class="string">'r'</span>);
+</pre><pre class="codeoutput">****** kasier window *******
+</pre><img vspace="5" hspace="5" src="s5_16.png" style="width:934px;height:712px;" alt=""> <img vspace="5" hspace="5" src="s5_17.png" style="width:934px;height:712px;" alt=""> <img vspace="5" hspace="5" src="s5_18.png" style="width:934px;height:712px;" alt=""> <h2 id="13">fir1, fir2, firpm (Parks-McClellan optimal equiripple FIR filter design)</h2><pre class="codeinput"><span class="comment">% f = [0 0.25 0.75 1];</span>
+<span class="comment">% a = [0 1 1 0];</span>
+
+<span class="comment">% a band-pass filter</span>
+f = [0 0.1 0.25 0.75 0.9 1];
+a = [0 0    1    1    0   0];
+bpm = firpm(25, f, a);
+[H,W] = freqz(bpm,1,256);
+
+figure
+subplot(2,2,1)
+stem(bpm); xlabel(<span class="string">'n'</span>); ylabel(<span class="string">'h[n]'</span>); axis <span class="string">tight</span>;
+subplot(2,2,2)
+plot(f,a,<span class="string">'k'</span>); hold <span class="string">on</span>;
+plot(W/pi,abs(H),<span class="string">'r'</span>); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H|'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,3)
+plot(W/pi,20*log10(abs(H))); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H| dB'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,4)
+plot(W/pi, unwrap(angle(H))); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'angle (rad)'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s5_19.png" style="width:934px;height:712px;" alt=""> <h2 id="14">firpm (Parks-McClellan optimal equiripple FIR filter design)</h2><pre class="codeinput"><span class="comment">% a low-pass filter</span>
+f = [0 0.37 0.43 1];
+a = [1 1 0 0];
+bpm = firpm(42, f, a);
+[H,W] = freqz(bpm,1,256);
+
+figure
+subplot(2,2,1); hold <span class="string">on</span>;
+stem(bpm); xlabel(<span class="string">'n'</span>); ylabel(<span class="string">'h[n]'</span>); axis <span class="string">tight</span>;
+subplot(2,2,2); hold <span class="string">on</span>;
+plot(W/pi,abs(H)); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H|'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,3); hold <span class="string">on</span>;
+plot(W/pi,20*log10(abs(H))); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H| dB'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,4); hold <span class="string">on</span>;
+plot(W/pi, unwrap(angle(H))); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'angle (rad)'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+
+bpm = firpm(82, f, a);  <span class="comment">% increase number of points</span>
+[H,W] = freqz(bpm,1,256);
+
+subplot(2,2,1);
+stem(bpm); xlabel(<span class="string">'n'</span>); ylabel(<span class="string">'h[n]'</span>); axis <span class="string">tight</span>;
+subplot(2,2,2)
+plot(W/pi,abs(H)); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H|'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,3);
+plot(W/pi,20*log10(abs(H))); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H| dB'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,4);
+plot(W/pi, unwrap(angle(H))); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'angle (rad)'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s5_20.png" style="width:934px;height:712px;" alt=""> <h2 id="15">firgr (Generalized Remez FIR filter design)</h2><pre class="codeinput">br = firgr(42, [0 0.37 0.43 1], [1 1  0 0], [1 10], <span class="string">'minphase'</span>);
+[H,W] = freqz(br,1,256);
+
+subplot(2,2,1);
+stem(br); xlabel(<span class="string">'n'</span>); ylabel(<span class="string">'h[n]'</span>); axis <span class="string">tight</span>;
+subplot(2,2,2);
+plot(W/pi,abs(H)); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H|'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,3);
+plot(W/pi,20*log10(abs(H))); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H| dB'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,4);
+plot(W/pi, unwrap(angle(H))); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'angle (rad)'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s5_21.png" style="width:934px;height:712px;" alt=""> <h2 id="16">firls (Linear-phase FIR filter design using least-squares error minimization)</h2><pre class="codeinput">br = firls(42, [0 0.37 0.43 1], [1 1  0 0]);
+[H,W] = freqz(br,1,256);
+
+subplot(2,2,1);
+stem(br); xlabel(<span class="string">'n'</span>); ylabel(<span class="string">'h[n]'</span>); axis <span class="string">tight</span>;
+subplot(2,2,2);
+plot(W/pi,abs(H)); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H|'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,3);
+plot(W/pi,20*log10(abs(H))); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'|H| dB'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+subplot(2,2,4);
+plot(W/pi, unwrap(angle(H))); xlabel(<span class="string">'\omega/\pi'</span>); ylabel(<span class="string">'angle (rad)'</span>); grid <span class="string">on</span>; axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="s5_22.png" style="width:934px;height:712px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% time domain representation of Ideal Frequency Selective Filter (IFF)
+
+OmegaC = pi/4;
+n1 = -50:50;
+h = OmegaC/pi*sinc(OmegaC*n1/pi);
+stem(n1,h);
+axis tight
+% this is a box in frequency domain
+
+%% Non Ideal Frequency Selective Filter (NFF)
+
+% a three point average is a low pass filer:
+% y(n) = [x(n-1)+x(n)+x(n+1)]/3
+% H(w) = [1+2cos(w)]/3
+
+o = -4*pi:0.01:4*pi;
+H = (1+2*cos(o))/3;
+figure
+subplot(2,1,1);
+plot(o,abs(H) );
+subplot(2,1,2);
+plot(o,angle(H) );
+
+% a difference is a high pass filer:
+% y(n) = [x(n)-x(n-1)]/2
+% H(w) = je^(-jw/2)sin(w/2)
+
+o = -4*pi:0.01:4*pi;
+H = exp(-1i*o/2)*1i.*(sin(o/2));
+figure
+subplot(2,1,1);
+plot(o,abs(H) );
+subplot(2,1,2);
+plot(o,angle(H) );
+
+%% moving average
+
+o = 0:0.01:1*pi;
+M = 16;
+N = 16;
+H = 1/(N+M+1)*exp(1i*o*(N-M)/2).*sin(o*(M+N+1)/2)./sin(o/2);
+figure
+subplot(2,1,1);
+plot(o,20*log10(abs(H)) ); axis tight;
+subplot(2,1,2);
+plot(o,angle(H) ); axis tight;
+
+% effect of changing M,N
+figure 
+[M,N] = deal(16);
+H = 1/(N+M+1)*exp(1i*o*(N-M)/2).*sin(o*(M+N+1)/2)./sin(o/2);
+plot(o,20*log10(abs(H)) ); hold on;
+
+[M,N] = deal(32);
+H = 1/(N+M+1)*exp(1i*o*(N-M)/2).*sin(o*(M+N+1)/2)./sin(o/2);
+plot(o,20*log10(abs(H)) ); hold on;
+
+[M,N] = deal(64);
+H = 1/(N+M+1)*exp(1i*o*(N-M)/2).*sin(o*(M+N+1)/2)./sin(o/2);
+plot(o,20*log10(abs(H)) ); hold on;
+
+%% MA with different weights b_k
+
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- weighted moving average
+n1 = -100:100;
+h = 2/33*sinc(2*n1/33); 
+idx = find(abs(n1)>32);
+h(idx)=0;
+figure;stem(n1,h)
+
+
+M = 500;
+k = -M:M;
+w = (pi/M)*k;
+
+H = h*(exp(-1i*pi/M)).^(n1'*k);
+
+% with fft
+U = fftshift(fft(h,1001));
+
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH simple moving average
+[M,N] = deal(16);
+H2 = 1/(N+M+1)*exp(1i*w*(N-M)/2).*sin(w*(M+N+1)/2)./sin(w/2);
+
+figure;
+plot(w,20*log10(abs(H)),'b'); xlim([-pi/4,pi/4]); hold on;
+plot(w,20*log10(abs(H2)),'r'); 
+plot(w,20*log10(abs(U)),'g');
+
+%% windows (filters)
+
+L = 64;
+w1 = kaiser(L,0); % beta is tapering 
+w2 = bartlett(L);
+w3 = hamming(L);
+w4 = kaiser(L,20);
+w5 = hanning(L);
+wvtool(w1,w2,w3,w4,w5);
+
+%% effect of the windows - box 
+
+n1 = -10:10;
+h = sin(pi*n1/4)./(pi*n1); h(isnan(h))=0.25;
+figure
+stem(n1,h); hold on;
+[h,n1] = sigshift(h,n1,10);  
+stem(n1,h);
+
+% freq(B,A,N)
+[H,W] = freqz(h,1,265);
+figure
+subplot(2,2,1)
+stem(n1,h); grid on; axis tight;
+subplot(2,2,2);
+plot(W/pi, abs(H)); grid on; axis tight;
+subplot(2,2,3);
+plot(W/pi, 20*log10(abs(H))); grid on; axis tight;
+subplot(2,2,4);
+plot(W/pi, unwrap(angle(H))); grid on; axis tight;
+
+%% effect of kasier window
+
+hw = h.*kaiser(21,5)';
+[HW, W] = freqz(hw,1,265);
+% figure
+subplot(2,2,1); hold on;
+stem(n1,hw); grid on; axis tight;
+subplot(2,2,2); hold on;
+plot(W/pi, abs(HW)); grid on; axis tight;
+subplot(2,2,3); hold on;
+plot(W/pi, 20*log10(abs(HW))); grid on; axis tight;
+subplot(2,2,4); hold on;
+plot(W/pi, unwrap(angle(HW))); grid on; axis tight;
+
+%% effect of hamming window
+
+hw = h.*hamming(21)';
+[HW, W] = freqz(hw,1,265);
+% figure
+subplot(2,2,1); hold on;
+stem(n1,hw); grid on; axis tight;
+subplot(2,2,2); hold on;
+plot(W/pi, abs(HW)); grid on; axis tight;
+subplot(2,2,3); hold on;
+plot(W/pi, 20*log10(abs(HW))); grid on; axis tight;
+subplot(2,2,4); hold on;
+plot(W/pi, unwrap(angle(HW))); grid on; axis tight;
+
+%% apply filters to signal 
+
+nx = 0:1023;
+s = (1-(nx-500).^2/4).*exp(-(nx-500).^2/2/4);
+
+n = -10:1:10;
+h = sin(pi*n/4)./(pi*n); h(isnan(h))=0.25;
+[y,ny] = conv_m(s,nx,h,n); 
+
+figure
+subplot(2,1,1)
+plot(nx,s,'b'); axis tight; xlim([460,540]); hold on;
+plot(ny,y,'r'); 
+
+subplot(2,1,2); 
+sf = fft(s,1024);
+plot(linspace(0,pi,length(sf)/2), ...
+    abs(sf(1:length(sf)/2)), 'b'); hold on;
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2), ...
+    abs(sf1(1:length(sf1)/2)), 'r'); 
+
+%% continue ( apply filters to signal )
+
+[h,n] = sigshift(h,n,10); % causaul filter
+[y,ny] = conv_m(s,nx,h,n);
+
+subplot(2,1,1)
+plot(ny,y,'k'); 
+
+subplot(2,1,2); 
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2), ...
+    abs(sf1(1:length(sf1)/2)), 'k'); 
+
+%% continue (apply filters to signal)
+
+hw = h.*kaiser(21,5)';
+[y,ny] = conv_m(s,nx,hw,n);
+
+subplot(2,1,1);
+plot(ny,y,'gREPLACE_WITH_DASH_DASH');
+subplot(2,1,2);
+sf1 = fft(y,1024); 
+plot(linspace(0,pi,length(sf1)/2), ...
+    abs(sf1(1:length(sf1)/2)), 'gREPLACE_WITH_DASH_DASH'); 
+
+%% use fir function
+
+M = 21;
+wc = 0.1;
+wo = 0.4; % band-pass filter
+wind = 4; % kaiser
+
+nx = 0:1023;
+s = (1-(nx-500).^2/4).*exp(-(nx-500).^2/2/4);
+
+[b] = fir(M,wc,wo,wind);
+nb = 0:length(b)-1; % causal
+
+[y,ny] = conv_m(s,nx,b,nb); 
+
+figure
+subplot(2,1,1)
+plot(nx,s,'b'); axis tight; xlim([460,540]); hold on;
+plot(ny,y,'r'); 
+
+subplot(2,1,2); 
+sf = fft(s,1024);
+plot(linspace(0,pi,length(sf)/2), ...
+    abs(sf(1:length(sf)/2)), 'b'); hold on;
+sf1 = fft(y,1024);
+plot(linspace(0,pi,length(sf1)/2), ...
+    abs(sf1(1:length(sf1)/2)), 'r'); 
+
+%% fir1, fir2, firpm (Parks-McClellan optimal equiripple FIR filter design)  
+
+% f = [0 0.25 0.75 1];
+% a = [0 1 1 0];
+
+% a band-pass filter
+f = [0 0.1 0.25 0.75 0.9 1];
+a = [0 0    1    1    0   0];
+bpm = firpm(25, f, a);
+[H,W] = freqz(bpm,1,256);
+
+figure
+subplot(2,2,1)
+stem(bpm); xlabel('n'); ylabel('h[n]'); axis tight;
+subplot(2,2,2)
+plot(f,a,'k'); hold on;
+plot(W/pi,abs(H),'r'); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3)
+plot(W/pi,20*log10(abs(H))); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4)
+plot(W/pi, unwrap(angle(H))); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+%% firpm (Parks-McClellan optimal equiripple FIR filter design)
+
+% a low-pass filter
+f = [0 0.37 0.43 1];
+a = [1 1 0 0];
+bpm = firpm(42, f, a);
+[H,W] = freqz(bpm,1,256);
+
+figure
+subplot(2,2,1); hold on;
+stem(bpm); xlabel('n'); ylabel('h[n]'); axis tight;
+subplot(2,2,2); hold on;
+plot(W/pi,abs(H)); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3); hold on;
+plot(W/pi,20*log10(abs(H))); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4); hold on;
+plot(W/pi, unwrap(angle(H))); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+bpm = firpm(82, f, a);  % increase number of points 
+[H,W] = freqz(bpm,1,256);
+
+subplot(2,2,1); 
+stem(bpm); xlabel('n'); ylabel('h[n]'); axis tight;
+subplot(2,2,2)
+plot(W/pi,abs(H)); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3); 
+plot(W/pi,20*log10(abs(H))); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4);
+plot(W/pi, unwrap(angle(H))); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+%% firgr (Generalized Remez FIR filter design)
+
+br = firgr(42, [0 0.37 0.43 1], [1 1  0 0], [1 10], 'minphase');
+[H,W] = freqz(br,1,256);
+
+subplot(2,2,1); 
+stem(br); xlabel('n'); ylabel('h[n]'); axis tight;
+subplot(2,2,2); 
+plot(W/pi,abs(H)); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3); 
+plot(W/pi,20*log10(abs(H))); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4); 
+plot(W/pi, unwrap(angle(H))); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+%% firls (Linear-phase FIR filter design using least-squares error minimization)
+
+br = firls(42, [0 0.37 0.43 1], [1 1  0 0]);
+[H,W] = freqz(br,1,256);
+
+subplot(2,2,1); 
+stem(br); xlabel('n'); ylabel('h[n]'); axis tight;
+subplot(2,2,2); 
+plot(W/pi,abs(H)); xlabel('\omega/\pi'); ylabel('|H|'); grid on; axis tight;
+subplot(2,2,3); 
+plot(W/pi,20*log10(abs(H))); xlabel('\omega/\pi'); ylabel('|H| dB'); grid on; axis tight;
+subplot(2,2,4); 
+plot(W/pi, unwrap(angle(H))); xlabel('\omega/\pi'); ylabel('angle (rad)'); grid on; axis tight;
+
+
+
+##### SOURCE END #####
+--></body></html>

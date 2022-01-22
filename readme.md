@@ -1,4 +1,8 @@
-# Description
+# Digital Signal Processing with MATLAB
+
+<img src="hei1.jpg" alt="A teacher - Werner Heisenberg">
+
+## Description
 
 All of the codes in this repo are based on Dr. Po Chen's course of DSP in Youtube!
 
